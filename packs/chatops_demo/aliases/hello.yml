@@ -1,0 +1,8 @@
+---
+name: "hello_world"
+description: "Hello world!"
+action_ref: "my-chatops.hello"
+formats:
+  - "hello"
+result:
+  format: "{{ execution.result.stdout }} {~}"

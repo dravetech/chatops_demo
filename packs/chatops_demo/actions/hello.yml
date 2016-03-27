@@ -1,0 +1,9 @@
+---
+name: hello
+runner_type: local-shell-cmd
+enabled: true
+parameters:
+  cmd:
+    description: "Command to run"
+    immutable: true
+    default: "echo This mission is too important for me to allow you to jeopardize it."
