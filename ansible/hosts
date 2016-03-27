@@ -1,0 +1,3 @@
+[lab]
+eos ansible_host=REPLACEME_GW ansible_port=12443
+junos ansible_host=REPLACEME_GW ansible_port=12202

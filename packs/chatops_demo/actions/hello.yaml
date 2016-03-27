@@ -1,5 +1,7 @@
 ---
 name: hello
+pack: chatops_demo
+description: Simple task to test the pack is correctly installed and we hubot is listening.
 runner_type: local-shell-cmd
 enabled: true
 parameters:

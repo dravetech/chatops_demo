@@ -1,0 +1,21 @@
+---
+chain:
+    - name: "test"
+      ref: "core.local"
+      parameters:
+          cmd: "echo this is a test"
+      notify:
+        on-success:
+          routes:
+            - slack
+          message: "chatops_demo.prepare_ansible. Action run by user {{action_context.user}}. {~}Woohoo!."
+    - name: "clone_repo"
+      ref: "core.local"
+      parameters:
+          cmd: "git clone https://github.com/dbarrosop/chatops_demo.git /tmp/chatops_demo"
+      on-success: "install_requirements"
+    - name: "install_requirements"
+      ref: "core.local"
+      parameters:
+          cmd: "pip install -r /tmp/chatops_demo/ansible/requirements.txt"
+default: "clone_repo"

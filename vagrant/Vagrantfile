@@ -1,0 +1,57 @@
+"""
+You will need the boxes:
+* vEOS-4.15.2F - https://eos.arista.com/using-veos-with-vagrant-and-virtualbox/
+* JunOS - juniper/ffp-12.1X47-D20.7-packetmode
+   * To provision and test JunOS first you have to add the ssh vagrant ssh key into the ssh-agent. I.e.:
+       ssh-add /opt/vagrant/embedded/gems/gems/vagrant-1.7.4/keys/vagrant
+"""
+
+Vagrant.configure(2) do |config|
+  config.vm.define "st2" do |st2|
+    st2.vm.network "private_network", type: "dhcp"
+    st2.vm.box = "puppetlabs/ubuntu-14.04-64-nocm"
+
+    st2.vm.provider "virtualbox" do |v|
+      v.memory = 1024
+    end
+
+    #st2.vm.provision "file", source: "st2/vagrant_key", destination: "/tmp/vagrant_key"
+    st2.vm.provision "file", source: "st2/rc.local", destination: "/tmp/rc.local"
+    st2.vm.provision "file", source: "st2/answers.yaml", destination: "/tmp/answers.yaml"
+    st2.vm.provision "shell", inline: <<-SHELL
+        export ETH0_IP=`ifconfig eth0 2>/dev/null|awk '/inet addr:/ {print $2}'|sed 's/addr://'`
+        export ETH1_IP=`ifconfig eth1 2>/dev/null|awk '/inet addr:/ {print $2}'|sed 's/addr://'`
+        sudo sed -i "s/REPLACEME_ETH0/$ETH0_IP/g" /tmp/answers.yaml
+        curl -sSL https://install.stackstorm.com/ | sudo sh -s -- -r v1.3.2 -a /tmp/answers.yaml
+        #chmod 0600 /tmp/vagrant_key
+        #ssh-agent -s
+        #ssh-add /tmp/vagrant_key
+        #sudo cp /tmp/rc.local /etc/rc.local
+        echo "Use the following URL to connect: https://$ETH1_IP"
+    SHELL
+
+  end
+  config.vm.define "eos" do |eos|
+    eos.vm.box = "vEOS-lab-4.15.2.1F"
+
+    eos.vbguest.auto_update = false
+    eos.ssh.insert_key = false
+
+    eos.vm.network :forwarded_port, guest: 22, host: 12201, id: 'ssh'
+    eos.vm.network :forwarded_port, guest: 443, host: 12443, id: 'https'
+
+    eos.vm.network "private_network", virtualbox__intnet: "link_1", ip: "169.254.1.11", auto_config: false
+    eos.vm.network "private_network", virtualbox__intnet: "link_2", ip: "169.254.1.11", auto_config: false
+  end
+  config.vm.define "junos" do |junos|
+    junos.vm.box = "juniper/ffp-12.1X47-D20.7-packetmode"
+
+    junos.vbguest.auto_update = false
+    junos.ssh.insert_key = false
+
+    junos.vm.network :forwarded_port, guest: 22, host: 12202, id: 'ssh'
+
+    junos.vm.network "private_network", virtualbox__intnet: "link_1", ip: "169.254.1.11", auto_config: false
+    junos.vm.network "private_network", virtualbox__intnet: "link_2", ip: "169.254.1.11", auto_config: false
+  end
+end

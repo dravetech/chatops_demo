@@ -1,0 +1,11 @@
+---
+name: clone_repo
+pack: chatops_demo
+runner_type: local-shell-cmd
+description: Clones the repo that contains this demo
+enabled: true
+parameters:
+  cmd:
+    description: "Command to run"
+    immutable: true
+    default: "git clone https://github.com/dbarrosop/chatops_demo.git /tmp/chatops_demo"
