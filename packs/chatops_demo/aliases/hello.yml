@@ -1,7 +1,7 @@
 ---
 name: "hello_world"
 description: "Hello world!"
-action_ref: "my-chatops.hello"
+action_ref: "chatops_demo.hello"
 formats:
   - "hello"
 result:
