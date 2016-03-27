@@ -4,5 +4,7 @@ description: "Hello world!"
 action_ref: "chatops_demo.hello"
 formats:
   - "hello"
+ack:
+  enabled: false
 result:
   format: "{{ execution.result.stdout }} {~}"
