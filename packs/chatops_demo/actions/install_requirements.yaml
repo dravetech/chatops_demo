@@ -5,11 +5,15 @@ runner_type: local-shell-cmd
 description: Install python requirements for this demo
 enabled: true
 parameters:
+  timeout:
+    immutable: true
+    default: 600
+  sudo:
+    immutable: true
+    default: true
   cmd:
-    description: Command to run
     immutable: true
     default: pip install -r ansible/requirements.txt
   cwd:
-    description: Working directory
     immutable: true
     default: /tmp/chatops_demo
