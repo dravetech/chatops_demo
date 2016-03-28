@@ -1,0 +1,26 @@
+{%- for play, play_data in result.items() -%}
+# {{ play }}
+
+  {%- for host, host_data in play_data.items() %}
+
+## {{ host }}
+
+    {%- for peer, pd in host_data.ansible_facts.bgp_neighbors.global.peers.items() %}
+
+### {{ peer }}
+
+Description: {{ pd.description }}
+
+Local AS: {{ pd.local_as }} Remote AS: {{ pd.remote_as }} Remote ID: {{ pd.remote_id }}
+Status: {{ 'Up' if pd.is_up else 'Down' }} State: {{ 'Enabled' if pd.is_enabled else 'Shutdown' }} Since: {{ pd.uptime }}
+
+Address Family - Sent Prefixes - Recevied Prefixes
+      {%- for af, afd in pd.address_family.items() %}
+{{ af }} - {{ afd.sent_prefixes }} - {{ afd.received_prefixes }}
+      {%- endfor -%}
+
+    {%- endfor -%}
+
+  {%- endfor -%}
+
+{%- endfor -%}

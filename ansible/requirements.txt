@@ -1,3 +1,0 @@
-ansible
-napalm-eos
-invoke

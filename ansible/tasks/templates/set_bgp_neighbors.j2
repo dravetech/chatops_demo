@@ -1,0 +1,24 @@
+{%- for play, play_data in result.items() %}
+# {{ play }}
+
+  {%- for host, host_data in play_data.items() %}
+
+    {%- if action == 'set' %}
+{{ host }} - Adding peer with IP {{ peer }} and ASN {{ peer_as }}
+    {%- elif action == 'remove' %}
+{{ host }} - Removing peer with IP {{ peer }}
+    {%- else %}
+Unknown acction {{ action }}
+    {%- endif %}
+
+    {%- if host_data.changed %}
+diff:
+{{ host_data.msg }}
+    {%- else %}
+This action doesn't change the device.
+    {%- endif %}
+
+
+  {%- endfor -%}
+
+{%- endfor -%}

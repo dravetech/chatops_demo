@@ -6,10 +6,16 @@ description: Updates the repo that contains this demo
 enabled: true
 parameters:
   cmd:
-    description: Command to run
     immutable: true
-    default: git pull
+    default: "git pull"
+  sudo:
+    immutable: true
+    default: false
+  timeout:
+    immutable: true
+    default: 60
+  kwarg_op:
+    immutable: true
+    default: "--"
   cwd:
-    description: Working directory
-    immutable: true
-    default: /tmp/chatops_demo
+    default: "/tmp/chatops_demo"
