@@ -1,0 +1,6 @@
+---
+dev_os: eos
+user: vagrant
+password: vagrant
+
+asn: 65002

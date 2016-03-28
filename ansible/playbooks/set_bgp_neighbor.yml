@@ -1,0 +1,37 @@
+---
+- name: BGP playbook
+  hosts: all
+  gather_facts: no
+  connection: local
+  vars:
+    ansible_python_interpreter: "/usr/bin/env python"
+    tmp_config_path: "_configuration/{{inventory_hostname}}"
+  pre_tasks:
+    - name: Remove old config
+      file: path="{{tmp_config_path}}" state=absent
+      changed_when: False
+      always_run: yes
+    - name: Create placeholder for building templates
+      file: path="{{tmp_config_path}}" state=directory
+      changed_when: False
+      always_run: yes
+
+  tasks:
+    - template: src={{ dev_os }}/set_bgp_peer.j2 dest="{{tmp_config_path}}/bgp.conf"
+      changed_when: False
+      when: action == "set"
+    - template: src={{ dev_os }}/remove_bgp_peer.j2 dest="{{tmp_config_path}}/bgp.conf"
+      changed_when: False
+      when: action == "remove"
+    - name: Set/Remove BGP neighbors
+      napalm_install_config:
+        hostname: "{{ ansible_host }}"
+        username: "{{ user }}"
+        password: "{{ password }}"
+        dev_os: "{{ dev_os }}"
+        optional_args:
+          port: "{{ ansible_port }}"
+        config_file: "{{tmp_config_path}}/bgp.conf"
+        replace_config: False
+        get_diffs: True
+        commit_changes: "{{ commit_changes }}"

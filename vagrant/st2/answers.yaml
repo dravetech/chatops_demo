@@ -6,7 +6,7 @@ users:
         password: "p4ssw0rd"
     dbarroso:
         shell: "/bin/false"
-        password: "p4ssw0rd"        
+        password: "p4ssw0rd"
     chatops_bot:
         shell: "/bin/false"
         password: "KR2LlMca5DCtEUf2CXFcNQBuykHcx00N"
@@ -18,10 +18,10 @@ groups:
 st2::stanley::ssh_key_type: "ssh-rsa"
 st2::stanley::username: "stanley"
 st2::stanley::ssh_private_key: "-----BEGIN RSA PRIVATE KEY-----\r\nMIIEogIBAAKCAQEAk+LirvQUuORQgW7uK3+PPWGqSFtgUZ+aeC5kGoCHFXe3q8UD\r\nrozsxgw+lqzcaD/grAFkoTH38IUhsFLm3X5KUBNtDKR8hBdBVBSvc/fVHkt7N9ul\r\nfe8Q6J+M4DcDhKGMIoBRkJNJXf6jN+b3ztNQe+lgogF9vRCOzh+iGmm5iNLE5qjG\r\nMIkrHY8lw6ZRRynYxU0lUiaQpr5ZmdC1cyzGnLrAUP0zFoWwT+cr85K4VlppzDm8\r\nW3BpfpswuySAjTbQidtRTV9tfbPXeiyh6I/262gngjKIVx6Wkxz/HdOrigqAMGyB\r\nOrcOKlf26m41U9nPMuMh9b/XTynAUJE737uJnwIDAQABAoIBAEzt/dXdCtqTin2K\r\nY0MlfDIGGDrDrftH92cFWvWeXqcAO/+S4TNwA8uSmwxup8ljUVCo+NwRzlTELJ44\r\nwff+tlGpiVTGTC+6mTVP/WVqSucThOmtzQ0Ry833EaWheKcKEofwEH4Q4F2RFP8D\r\nm21v57JN2QLtm6c6cc8wDXeIAAf4Mh29WZsIKc5xi+8ew21KQ+EX82FfAvhHV0NS\r\npANhxfU+13R5h+OEyc+fH20W7D45naPZzLmevQRquBwBwUYyg9CDpW8h0Q0EcjcL\r\nKj/n+sLgaglEVmS0Uz/ulhj3Fu7qwABY3nefdsWgGh2gqRp0w1gF4nIoS++i/Xj1\r\ny0iZjCECgYEAwe98gkSziS6MBZnLt61sC2Fmi2dj8NNgnjJYIrJxxLQQcsPl2z+8\r\nQagKpEGu+sBXAhRSvBCOjRm9WC5eENRjLT58XYf/DbVVl9q6UwUQVmcbaGDNNVAv\r\nCZms0ej72mvwdSznkesV05V8cY6cIIMmHcTwJ3a81EoWPnqOZfyww90CgYEAwza7\r\n38bvwgXf72jR5n5GhOMi2cOx6+nBhC1leaCUAptn23K2O5jRFN+42p+rgKIxsTTT\r\n7HkNXSLg74mMGJ3qa51BDSkxZVkh2eS65XfNKTDdbMnDClTMtXYiquHIltT7BgjU\r\nRQ+q+QD/NMIS2WjxOV5Cy/B/paMiui9BMG22uasCgYAeHZNnI0YB+oFx6TUSW9LY\r\nXZKv+Sky35A0YLsBAFbcZd3cBIGwL1CLnY2xfiWu+KlKQF+spqGMVb/qbqDa2jBg\r\neUCUwaaguVUGVMf0Vmf4EuDVr5qOOdpkEkIdAqIBhBt+BrAbH7du+NqvQ6cJAXSs\r\n0MU+S5j9Glgj8aIlQj0s3QKBgEG+1VdwcJ8vy1OeQdMXBDkNJlehCPMjLwGNKHfm\r\nFPMr07ac07MOrJwTHPbEf8Y62fGMkTM7Mb0EWi1SbdR8ms7Tj20XSoOPmU8BMdDG\r\noFoXEvvol7+K/8a9mr9ie2QRJtnJb3Qy6qoiI9Fo62A9b8CadnSo8tSeNLvv3kyp\r\nJrkxAoGABmVknEIBTfD5VOP4CSAFcppiu1nWbT/GgODOH9Lp4VqjQzq3mq6GnNnJ\r\nrRFaliZXtVI1QrLMs2GMHrUaWbiuaYCS1CYd0lAkAZt50F+GMZ0BYUpCdBEHzGer\r\nMA6zuRZL4vDkeyPxLpRkIj+8yoDC7kY4igiH4bhWRF+3stWnFpU=\r\n-----END RSA PRIVATE KEY-----"
-st2::cli_api_url: "https://chatops-server/api"
+st2::cli_api_url: "https://REPLACEME_ETH0/api"
 st2::stanley::ssh_public_key: "AAAAB3NzaC1yc2EAAAADAQABAAABAQCT4uKu9BS45FCBbu4rf489YapIW2BRn5p4LmQagIcVd7erxQOujOzGDD6WrNxoP+CsAWShMffwhSGwUubdfkpQE20MpHyEF0FUFK9z99UeS3s326V97xDon4zgNwOEoYwigFGQk0ld/qM35vfO01B76WCiAX29EI7OH6IaabmI0sTmqMYwiSsdjyXDplFHKdjFTSVSJpCmvlmZ0LVzLMacusBQ/TMWhbBP5yvzkrhWWmnMObxbcGl+mzC7JICNNtCJ21FNX219s9d6LKHoj/braCeCMohXHpaTHP8d06uKCoAwbIE6tw4qV/bqbjVT2c8y4yH1v9dPKcBQkTvfu4mf"
-st2::cli_auth_url: "https://chatops-server/auth"
-st2::auth_url: "https://chatops-server/auth"
+st2::cli_auth_url: "https://REPLACEME_ETH0/auth"
+st2::auth_url: "https://REPLACEME_ETH0/auth"
 st2::kvs:
     st2::server_uuid:
         value: "8a95af7a-f394-11e5-bc1d-080027767a6b"
@@ -30,12 +30,10 @@ st2::kvs:
     st2::user_data:
         value: "{}"
 
-st2::api_url: "https://chatops-server/api"
+st2::api_url: "https://REPLACEME_ETH0/api"
 st2::installer_run: true
 
 st2::packs:
-  ansible:
-      ensure: present
   chatops:
       ensure: present
       register: all

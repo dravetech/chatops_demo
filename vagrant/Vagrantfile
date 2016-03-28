@@ -27,31 +27,36 @@ Vagrant.configure(2) do |config|
         #ssh-agent -s
         #ssh-add /tmp/vagrant_key
         #sudo cp /tmp/rc.local /etc/rc.local
+        sudo dd if=/dev/zero of=/swapfile bs=1024 count=524288
+        sudo chmod 600 /swapfile
+        sudo mkswap /swapfile
+        sudo swapon /swapfile
         echo "Use the following URL to connect: https://$ETH1_IP"
     SHELL
 
   end
-  config.vm.define "eos" do |eos|
-    eos.vm.box = "vEOS-lab-4.15.2.1F"
+  config.vm.define "sw1" do |sw1|
+    sw1.vm.box = "vEOS-lab-4.15.2.1F"
 
-    eos.vbguest.auto_update = false
-    eos.ssh.insert_key = false
+    sw1.vbguest.auto_update = false
+    sw1.ssh.insert_key = false
 
-    eos.vm.network :forwarded_port, guest: 22, host: 12201, id: 'ssh'
-    eos.vm.network :forwarded_port, guest: 443, host: 12443, id: 'https'
+    sw1.vm.network :forwarded_port, guest: 22, host: 12201, id: 'ssh'
+    sw1.vm.network :forwarded_port, guest: 443, host: 12443, id: 'https'
 
-    eos.vm.network "private_network", virtualbox__intnet: "link_1", ip: "169.254.1.11", auto_config: false
-    eos.vm.network "private_network", virtualbox__intnet: "link_2", ip: "169.254.1.11", auto_config: false
+    sw1.vm.network "private_network", virtualbox__intnet: "link_1", ip: "169.254.1.11", auto_config: false
+    sw1.vm.network "private_network", virtualbox__intnet: "link_2", ip: "169.254.1.11", auto_config: false
   end
-  config.vm.define "junos" do |junos|
-    junos.vm.box = "juniper/ffp-12.1X47-D20.7-packetmode"
+  config.vm.define "sw2" do |sw2|
+    sw2.vm.box = "vEOS-lab-4.15.2.1F"
 
-    junos.vbguest.auto_update = false
-    junos.ssh.insert_key = false
+    sw2.vbguest.auto_update = false
+    sw2.ssh.insert_key = false
 
-    junos.vm.network :forwarded_port, guest: 22, host: 12202, id: 'ssh'
+    sw2.vm.network :forwarded_port, guest: 22, host: 12202, id: 'ssh'
+    sw2.vm.network :forwarded_port, guest: 443, host: 12444, id: 'https'
 
-    junos.vm.network "private_network", virtualbox__intnet: "link_1", ip: "169.254.1.11", auto_config: false
-    junos.vm.network "private_network", virtualbox__intnet: "link_2", ip: "169.254.1.11", auto_config: false
+    sw2.vm.network "private_network", virtualbox__intnet: "link_1", ip: "169.254.1.11", auto_config: false
+    sw2.vm.network "private_network", virtualbox__intnet: "link_2", ip: "169.254.1.11", auto_config: false
   end
 end
