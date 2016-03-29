@@ -64,33 +64,33 @@ def _process_result(result, template, important_tasks=None, **kwargs):
 
 
 @invoke.task
-def get_bgp_neighbors(host):
+def get_bgp_neighbors(hosts):
     """Get BGP details for a neighbor."""
     important_tasks = ['Get BGP neighbors']
-    result = _run_playbook('playbooks/get_bgp_neighbors.yml', host)
+    result = _run_playbook('playbooks/get_bgp_neighbors.yml', hosts)
     print(_process_result(result, 'get_bgp_neighbors.j2', important_tasks))
 
 
-def _manipulate_bgp_neighbors(host, peer, peer_as, commit_changes, extra_args, action):
+def _manipulate_bgp_neighbors(hosts, peer, peer_as, commit_changes, extra_args, action):
     important_tasks = ['Set/Remove BGP neighbors']
-    run_result = _run_playbook('playbooks/set_bgp_neighbor.yml', host, extra_args)
+    run_result = _run_playbook('playbooks/set_bgp_neighbor.yml', hosts, extra_args)
     print(_process_result(run_result, 'set_bgp_neighbors.j2', important_tasks, peer=peer,
                           peer_as=peer_as, action=action, commit_changes=commit_changes))
 
 
 @invoke.task
-def set_bgp_neighbor(host, peer, peer_as, commit_changes=False):
+def set_bgp_neighbor(hosts, peer, peer_as, commit_changes=False):
     """Set a BGP neighbor."""
     action = 'set'
     extra_args = 'peer={ip} peer_as={asn} commit_changes={c} action={a}'.format(
                                                    ip=peer, asn=peer_as, c=commit_changes, a=action)
-    _manipulate_bgp_neighbors(host, peer, peer_as, commit_changes, extra_args, action)
+    _manipulate_bgp_neighbors(hosts, peer, peer_as, commit_changes, extra_args, action)
 
 
 @invoke.task
-def remove_bgp_neighbor(host, peer, commit_changes=False):
+def remove_bgp_neighbor(hosts, peer, commit_changes=False):
     """Set a BGP neighbor."""
     action = 'remove'
     extra_args = 'peer={ip} commit_changes={c} action={a}'.format(
                                                                 ip=peer, c=commit_changes, a=action)
-    _manipulate_bgp_neighbors(host, peer, None, commit_changes, extra_args, action)
+    _manipulate_bgp_neighbors(hosts, peer, None, commit_changes, extra_args, action)
