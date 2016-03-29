@@ -1,0 +1,46 @@
+---
+name: set_bgp_neighbor
+pack: chatops_demo
+runner_type: local-shell-cmd
+description: Add a BGP neighbor to a device
+enabled: true
+parameters:
+  timeout:
+    immutable: true
+    default: 600
+  sudo:
+    immutable: false
+    default: true
+  cmd:
+    immutable: true
+    default: /usr/local/bin/inv deploy.set_bgp_neighbor -h sw1 --peer={{peer}} --peer-as={{peer_asn}} --{{ commit_changes }}
+  cwd:
+    immutable: true
+    default: /tmp/chatops_demo/ansible
+  kwarg_op:
+    immutable: true
+    default: "--"
+  hosts:
+    type: "string"
+    required: true
+    position: 1
+    description: Host to connect to
+  peer:
+    type: "string"
+    required: true
+    position: 2
+    description: Peer to add
+  peer_asn:
+    type: "integer"
+    required: true
+    position: 3
+    description: Peer's AS
+  commit_changes:
+    type: "string"
+    required: true
+    position: 4
+    description: Commit changes
+    default: ''
+    enum:
+      - ' '
+      - 'commit-changes'

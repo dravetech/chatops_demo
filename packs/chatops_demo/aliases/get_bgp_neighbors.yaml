@@ -1,0 +1,12 @@
+---
+name: "get_bgp_neighbors"
+description: "Get BGP neighbors."
+action_ref: "chatops_demo.get_bgp_neighbors"
+formats:
+  - "get bgp neigh {{hosts}}"
+  - "get bgp neighbors {{hosts}}"
+  - "show bgp neigh {{hosts}}"
+  - "show bgp neighbors {{hosts}}"
+  - "sbn {{hosts}}"
+result:
+  format: "{~}{{ execution.result.stdout.pretty }} "

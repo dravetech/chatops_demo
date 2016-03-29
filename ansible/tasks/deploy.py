@@ -56,11 +56,11 @@ def _process_result(result, template, important_tasks=None, **kwargs):
     else:
         pretty = stderr
 
-    return {
+    return json.dumps({
         'stdout': stdout,
         'stderr': stderr,
         'pretty': pretty,
-    }
+    })
 
 
 @invoke.task
