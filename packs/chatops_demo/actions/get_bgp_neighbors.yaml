@@ -13,7 +13,7 @@ parameters:
     default: true
   cmd:
     immutable: true
-    default: /usr/local/bin/inv deploy.get_bgp_neighbors -h {{hosts}}
+    default: /opt/stackstorm/virtualenvs/chatops_demo/bin/inv deploy.get_bgp_neighbors -h {{hosts}}
   cwd:
     immutable: true
     default: /tmp/chatops_demo/ansible
@@ -25,3 +25,5 @@ parameters:
     required: true
     position: 1
     description: Host to connect to
+  env:
+    default: "{ "PATH": "/opt/stackstorm/virtualenvs/chatops_demo/bin/:/usr/bin/" }"

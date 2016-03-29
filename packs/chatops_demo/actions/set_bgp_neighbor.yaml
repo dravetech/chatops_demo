@@ -13,7 +13,7 @@ parameters:
     default: true
   cmd:
     immutable: true
-    default: /usr/local/bin/inv deploy.set_bgp_neighbor -h sw1 --peer={{peer}} --peer-as={{peer_asn}} --{{ commit_changes }}
+    default: /opt/stackstorm/virtualenvs/chatops_demo/bin/inv deploy.set_bgp_neighbor -h sw1 --peer={{peer}} --peer-as={{peer_asn}} --{{ commit_changes }}
   cwd:
     immutable: true
     default: /tmp/chatops_demo/ansible
@@ -44,3 +44,5 @@ parameters:
     enum:
       - ' '
       - 'commit-changes'
+  env:
+    default: "PATH=/opt/stackstorm/virtualenvs/chatops_demo/bin/:$PATH"

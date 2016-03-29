@@ -13,7 +13,7 @@ parameters:
     default: true
   cmd:
     immutable: true
-    default: /usr/local/bin/inv deploy.remove_bgp_neighbor -h sw1 --peer={{peer}} --{{ commit_changes }}
+    default: /opt/stackstorm/virtualenvs/chatops_demo/bin/inv deploy.remove_bgp_neighbor -h sw1 --peer={{peer}} --{{ commit_changes }}
   cwd:
     immutable: true
     default: /tmp/chatops_demo/ansible
