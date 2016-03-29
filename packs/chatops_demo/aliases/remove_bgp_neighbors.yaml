@@ -6,4 +6,4 @@ formats:
   - "remove bgp neigh {{hosts}} {{peer}} {{commit_changes=' '}}"
   - "remove bgp neighbors {{hosts}} {{peer}} {{commit_changes=' '}}"
 result:
-  format: "{~}{{ execution.result.stdout.pretty }} "
+  format: "{~}{{ execution.result.result.pretty }} "

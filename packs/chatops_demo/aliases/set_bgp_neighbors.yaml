@@ -6,4 +6,4 @@ formats:
   - "set bgp neigh {{hosts}} {{peer}} {{peer_asn}} {{commit_changes=' '}}"
   - "set bgp neighbors {{hosts}} {{peer}} {{peer_asn}} {{commit_changes=' '}}"
 result:
-  format: "{~}{{ execution.result.stdout.pretty }} "
+  format: "{~}{{ execution.result.result.pretty }} "

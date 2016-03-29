@@ -1,29 +1,26 @@
 ---
 name: get_bgp_neighbors
 pack: chatops_demo
-runner_type: local-shell-cmd
+runner_type: python-script
+entry_point: 'invoke_wrapper.py'
 description: Get BGP neighbors from a device
 enabled: true
 parameters:
-  timeout:
+  task:
+    type: "string"
     immutable: true
-    default: 600
-  sudo:
+    default: deploy.get_bgp_neighbors
+  task_path:
+    required: true
     immutable: false
-    default: true
-  cmd:
-    immutable: true
-    default: /opt/stackstorm/virtualenvs/chatops_demo/bin/inv deploy.get_bgp_neighbors -h {{hosts}}
-  cwd:
-    immutable: true
     default: /tmp/chatops_demo/ansible
-  kwarg_op:
-    immutable: true
-    default: "--"
   hosts:
     type: "string"
     required: true
-    position: 1
     description: Host to connect to
-  env:
-    default: "{ "PATH": "/opt/stackstorm/virtualenvs/chatops_demo/bin/:/usr/bin/" }"
+  sudo:
+    immutable: false
+    default: false
+  timeout:
+    immutable: true
+    default: 600
