@@ -39,8 +39,15 @@ class InvokeWrapper(Action):
         cmd.append(kwargs.pop('task'))
 
         for k, v in kwargs.items():
-            cmd.append('--{}={}'.format(k, v))
+            k = k.replace('_', '-')
 
+            if isinstance(v, bool):
+                if v:
+                    cmd.append('--{}'.format(k))
+            else:
+                cmd.append('--{}={}'.format(k, v))
+
+        print(cmd)
         process = subprocess.Popen(cmd, cwd=task_path,
                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         out, err = process.communicate()

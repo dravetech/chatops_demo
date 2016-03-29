@@ -3,7 +3,7 @@ name: "remove_bgp_neighbors"
 description: "Remove a BGP neighbor from a device."
 action_ref: "chatops_demo.remove_bgp_neighbor"
 formats:
-  - "remove bgp neigh {{hosts}} {{peer}} {{commit_changes=' '}}"
-  - "remove bgp neighbors {{hosts}} {{peer}} {{commit_changes=' '}}"
+  - "remove bgp neigh {{hosts}} {{peer}} {{commit_changes=False}}"
+  - "remove bgp neighbors {{hosts}} {{peer}} {{commit_changes=False}}"
 result:
   format: "{~}{{ execution.result.result.pretty }} "

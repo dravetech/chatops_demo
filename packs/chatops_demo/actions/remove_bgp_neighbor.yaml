@@ -21,17 +21,12 @@ parameters:
   peer:
     type: "string"
     required: true
-    position: 2
     description: Peer to add
   commit_changes:
-    type: "string"
+    type: "boolean"
     required: true
-    position: 4
     description: Commit changes
-    default: ''
-    enum:
-      - ' '
-      - 'commit-changes'
+    default: false
   sudo:
     immutable: false
     default: false
