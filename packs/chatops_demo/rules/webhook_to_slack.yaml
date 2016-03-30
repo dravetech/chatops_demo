@@ -1,0 +1,20 @@
+---
+# curl -k -X POST https://127.0.0.1:9101/v1/webhooks/slack_message -H "X-Auth-Token: 4ff7c00c79cc4383a95b0077627a9aa2" --data '{"type": "device_log", "device": "sw1", "message": "ALERT!!!ALERT!! We are all gonna die!!!"}'
+name: device_report_to_slack
+description: Webhook to allow a device to report something into slack.
+pack: chatops_demo
+criteria: {}
+enabled: true
+criteria:
+  trigger.body.type:
+    pattern: device_log
+    type: equals
+trigger:
+    type: "core.st2.webhook"
+    parameters:
+        url: "slack_message"
+action:
+  parameters:
+    channel: dbarroso-chatops-test
+    message: '*{{trigger.body.device}}*: ```{{trigger.body.message}}```'
+  ref: chatops.post_message

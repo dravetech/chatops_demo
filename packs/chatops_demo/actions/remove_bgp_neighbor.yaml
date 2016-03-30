@@ -13,7 +13,7 @@ parameters:
   task_path:
     required: true
     immutable: false
-    default: /tmp/chatops_demo/ansible
+    default: /vagrant/ansible/
   hosts:
     type: "string"
     required: true

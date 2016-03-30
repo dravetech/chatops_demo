@@ -1,7 +1,8 @@
-# Instructions
+# Features
 
-```
-1. vagrant up
-2. vagrant ssh to figure out ip
-3. Everything default, unmark chatops
-```
+1. Some operations via slack
+2. Some operations require confirmation
+3. Devices can log to slack
+
+
+# Instructions
