@@ -1,0 +1,10 @@
+---
+name: "set_bgp_neighbors"
+description: "Set a BGP neighbor on a device."
+# action_ref: "chatops_demo.set_bgp_neighbor"
+action_ref: "chatops_demo.set_bgp_neigh_with_confirm"
+formats:
+  - "set bgp neigh {{hosts}} {{peer}} {{peer_as}}"
+  - "set bgp neighbors {{hosts}} {{peer}} {{peer_as}}"
+result:
+  format: "Action {{ execution.id }} completed {~}"

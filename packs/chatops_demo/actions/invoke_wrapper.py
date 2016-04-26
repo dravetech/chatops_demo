@@ -35,7 +35,6 @@ class InvokeWrapper(Action):
 
         task_path = kwargs.pop('task_path')
         cmd.extend(['-r', task_path])
-
         cmd.append(kwargs.pop('task'))
 
         for k, v in kwargs.items():
@@ -46,7 +45,7 @@ class InvokeWrapper(Action):
                     cmd.append('--{}'.format(k))
             else:
                 cmd.append('--{}={}'.format(k, v))
-
+        cmd.extend(['-o', 'json'])
         print(cmd)
         process = subprocess.Popen(cmd, cwd=task_path,
                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE)

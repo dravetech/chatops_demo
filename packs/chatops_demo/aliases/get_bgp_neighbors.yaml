@@ -9,4 +9,4 @@ formats:
   - "show bgp neighbors {{hosts}}"
   - "sbn {{hosts}}"
 result:
-  format: "{~}{{ execution.result.result.pretty }} "
+  format: "{~}{{ execution.result.result.pretty_output }} "

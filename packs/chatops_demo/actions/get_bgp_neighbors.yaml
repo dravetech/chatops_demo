@@ -9,7 +9,7 @@ parameters:
   task:
     type: "string"
     immutable: true
-    default: deploy.get_bgp_neighbors
+    default: show.bgp_neighbors
   task_path:
     required: true
     immutable: false

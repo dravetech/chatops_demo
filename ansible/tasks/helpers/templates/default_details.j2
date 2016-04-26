@@ -1,0 +1,3 @@
+{%- for k, v in data.items() %}
+    {% if loop.index0 == 0 %}* {% else %}  {% endif %}{{ k }}: {{ v }}
+{%- endfor %}{{'\n'}}

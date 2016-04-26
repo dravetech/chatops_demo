@@ -1,0 +1,20 @@
+---
+description: Set BPG neighbor with confirm.
+enabled: true
+entry_point: workflows/set_bgp_neighbor.yaml
+name: set_bgp_neigh_with_confirm
+pack: chatops_demo
+runner_type: mistral-v2
+parameters:
+  hosts:
+    type: "string"
+    required: true
+    description: Host to connect to
+  peer:
+    type: "string"
+    required: true
+    description: Peer to add
+  peer_as:
+    type: "integer"
+    required: true
+    description: Peer's AS

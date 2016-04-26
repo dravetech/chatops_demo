@@ -17,12 +17,17 @@
       always_run: yes
 
   tasks:
-    - template: src={{ dev_os }}/set_bgp_peer.j2 dest="{{tmp_config_path}}/bgp.conf"
+    - name: Generating new config for adding peer
+      template: src={{ dev_os }}/set_bgp_peer.j2 dest="{{tmp_config_path}}/bgp.conf"
       changed_when: False
-      when: action == "set"
-    - template: src={{ dev_os }}/remove_bgp_peer.j2 dest="{{tmp_config_path}}/bgp.conf"
+      tags: [add_bgp_peer, ]
+    - name: Generating new config for deleting peer
+      template: src={{ dev_os }}/remove_bgp_peer.j2 dest="{{tmp_config_path}}/bgp.conf"
       changed_when: False
-      when: action == "remove"
+      tags: [remove_bgp_peer, ]
+    - name: Operation
+      set_fact: peer="{{peer}}" peer_as="{{peer_as|default(False)}}"
+      tags: [add_bgp_peer, remove_bgp_peer]
     - name: Set/Remove BGP neighbors
       napalm_install_config:
         hostname: "{{ ansible_host }}"
@@ -35,3 +40,4 @@
         replace_config: False
         get_diffs: True
         commit_changes: "{{ commit_changes }}"
+      tags: [add_bgp_peer, remove_bgp_peer, ]

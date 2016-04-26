@@ -1,9 +1,0 @@
----
-name: "set_bgp_neighbors"
-description: "Set a BGP neighbor on a device."
-action_ref: "chatops_demo.set_bgp_neighbor"
-formats:
-  - "set bgp neigh {{hosts}} {{peer}} {{peer_as}} {{commit_changes=False}}"
-  - "set bgp neighbors {{hosts}} {{peer}} {{peer_as}} {{commit_changes=False}}"
-result:
-  format: "{~}{{ execution.result.result.pretty }} "

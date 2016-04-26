@@ -16,3 +16,4 @@
         optional_args:
           port: "{{ ansible_port }}"
         filter: bgp_neighbors
+      tags: [show_bgp_neighbors, ]

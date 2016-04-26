@@ -3,7 +3,8 @@
 
 import invoke
 
-from . import deploy
+from . import deploy, show
 
 ns = invoke.Collection()
 ns.add_collection(invoke.Collection.from_module(deploy))
+ns.add_collection(invoke.Collection.from_module(show))

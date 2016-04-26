@@ -17,26 +17,21 @@ Vagrant.configure(2) do |config|
 
     st2.vm.synced_folder "../", "/vagrant"
 
-    #st2.vm.provision "file", source: "st2/vagrant_key", destination: "/tmp/vagrant_key"
-    st2.vm.provision "file", source: "st2/rc.local", destination: "/tmp/rc.local"
-    st2.vm.provision "file", source: "st2/answers.yaml", destination: "/tmp/answers.yaml"
     st2.vm.provision "shell", inline: <<-SHELL
-        export ETH0_IP=`ifconfig eth0 2>/dev/null|awk '/inet addr:/ {print $2}'|sed 's/addr://'`
-        export ETH1_IP=`ifconfig eth1 2>/dev/null|awk '/inet addr:/ {print $2}'|sed 's/addr://'`
-        sudo sed -i "s/REPLACEME_ETH0/$ETH0_IP/g" /tmp/answers.yaml
-        curl -sSL https://install.stackstorm.com/ | sudo sh -s -- -r v1.3.2 -a /tmp/answers.yaml
-        sudo rm -rf /opt/stackstorm/packs/chatops_demo
-        sudo ln -sf /vagrant/packs/chatops_demo /opt/stackstorm/packs/chatops_demo
-        sudo st2ctl restart
-        #chmod 0600 /tmp/vagrant_key
-        #ssh-agent -s
-        #ssh-add /tmp/vagrant_key
-        #sudo cp /tmp/rc.local /etc/rc.local
-        sudo dd if=/dev/zero of=/swapfile bs=1024 count=524288
-        sudo chmod 600 /swapfile
-        sudo mkswap /swapfile
-        sudo swapon /swapfile
-        echo "Use the following URL to connect: https://$ETH1_IP"
+      sudo bash /vagrant/vagrant/st2/st2bootstrap-deb.sh
+      export ETH0_IP=`ifconfig eth0 2>/dev/null|awk '/inet addr:/ {print $2}'|sed 's/addr://'`
+      export ETH1_IP=`ifconfig eth1 2>/dev/null|awk '/inet addr:/ {print $2}'|sed 's/addr://'`
+      sudo ln -sf /vagrant/packs/chatops_demo /opt/stackstorm/packs/chatops_demo
+      sudo st2ctl reload
+      # chmod 0600 /tmp/vagrant_key
+      # ssh-agent -s
+      # ssh-add /tmp/vagrant_key
+      # sudo cp /tmp/rc.local /etc/rc.local
+      sudo dd if=/dev/zero of=/swapfile bs=1024 count=524288
+      sudo chmod 600 /swapfile
+      sudo mkswap /swapfile
+      sudo swapon /swapfile
+      echo "Use the following URL to connect: https://$ETH1_IP"
     SHELL
 
   end

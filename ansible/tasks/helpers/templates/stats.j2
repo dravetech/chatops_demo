@@ -1,0 +1,6 @@
+Stats
+=====
+
+{% for host, host_data in stats.items() -%}
+{{ host }}:{{'\t'}}{% for k, v in host_data.items() %}{{k}}: {{v}}{{'\t'}}{% endfor %}
+{% endfor %}

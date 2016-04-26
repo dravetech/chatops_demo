@@ -1,3 +1,4 @@
+"""json.py callback plugin."""
 # (c) 2016, Matt Martz <matt@sivel.net>
 #
 # This file is part of Ansible
@@ -17,19 +18,23 @@
 
 # Make coding more python3-ish
 from __future__ import (absolute_import, division, print_function)
-__metaclass__ = type
 
 import json
 
 from ansible.plugins.callback import CallbackBase
 
+__metaclass__ = type
+
 
 class CallbackModule(CallbackBase):
+    """json.py callback plugin."""
+
     CALLBACK_VERSION = 2.0
     CALLBACK_TYPE = 'stdout'
     CALLBACK_NAME = 'json'
 
     def __init__(self, display=None):
+        """json.py callback plugin."""
         super(CallbackModule, self).__init__(display)
         self.results = []
 
@@ -45,6 +50,7 @@ class CallbackModule(CallbackBase):
     def _new_task(self, task):
         return {
             'task': {
+                'action': task.action,
                 'name': task.name,
                 'id': str(task._uuid)
             },
@@ -52,18 +58,24 @@ class CallbackModule(CallbackBase):
         }
 
     def v2_playbook_on_play_start(self, play):
+        """Run on start of the play."""
         self.results.append(self._new_play(play))
 
     def v2_playbook_on_task_start(self, task, is_conditional):
+        """Run when a task starts."""
         self.results[-1]['tasks'].append(self._new_task(task))
 
     def v2_runner_on_ok(self, result, **kwargs):
+        """Run when a task finishes correctly."""
         host = result._host
         self.results[-1]['tasks'][-1]['hosts'][host.name] = result._result
 
-    def v2_playbook_on_stats(self, stats):
-        """Display info about playbook statistics"""
+    def v2_playbook_on_handler_task_start(self, task):
+        """Run when a handler starts."""
+        self.v2_playbook_on_task_start(task, is_conditional=False)
 
+    def v2_playbook_on_stats(self, stats):
+        """Display info about playbook statistics."""
         hosts = sorted(stats.processed.keys())
 
         summary = {}
@@ -75,7 +87,6 @@ class CallbackModule(CallbackBase):
             'plays': self.results,
             'stats': summary
         }
-
         print(json.dumps(output, indent=4, sort_keys=True))
 
     v2_runner_on_failed = v2_runner_on_ok

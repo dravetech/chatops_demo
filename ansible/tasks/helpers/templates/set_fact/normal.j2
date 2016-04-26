@@ -1,0 +1,5 @@
+{%- if data.ansible_facts.peer_as -%}
+{{'    '}}Adding peer with IP `{{ data.ansible_facts.peer }}` and ASN `{{ data.ansible_facts.peer_as }}`
+{%- else -%}
+{{'    '}}Removing peer with IP `{{ data.ansible_facts.peer }}`
+{%- endif -%}

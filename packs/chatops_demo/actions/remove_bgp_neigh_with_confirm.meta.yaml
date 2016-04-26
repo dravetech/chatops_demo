@@ -1,0 +1,16 @@
+---
+description: Remove BPG neighbor with confirm.
+enabled: true
+entry_point: workflows/remove_bgp_neighbor.yaml
+name: remove_bgp_neigh_with_confirm
+pack: chatops_demo
+runner_type: mistral-v2
+parameters:
+  hosts:
+    type: "string"
+    required: true
+    description: Host to connect to
+  peer:
+    type: "string"
+    required: true
+    description: Peer to add
