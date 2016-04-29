@@ -11,6 +11,8 @@ Vagrant.configure(2) do |config|
     st2.vm.network "private_network", type: "dhcp"
     st2.vm.box = "puppetlabs/ubuntu-14.04-64-nocm"
 
+    st2.vm.network :forwarded_port, guest: 443, host: 19443, id: 'api'
+
     st2.vm.provider "virtualbox" do |v|
       v.memory = 1024
     end
@@ -18,23 +20,15 @@ Vagrant.configure(2) do |config|
     st2.vm.synced_folder "../", "/vagrant"
 
     st2.vm.provision "shell", inline: <<-SHELL
-      sudo bash /vagrant/vagrant/st2/st2bootstrap-deb.sh
-      export ETH0_IP=`ifconfig eth0 2>/dev/null|awk '/inet addr:/ {print $2}'|sed 's/addr://'`
-      export ETH1_IP=`ifconfig eth1 2>/dev/null|awk '/inet addr:/ {print $2}'|sed 's/addr://'`
-      sudo ln -sf /vagrant/packs/chatops_demo /opt/stackstorm/packs/chatops_demo
-      sudo st2ctl reload
-      # chmod 0600 /tmp/vagrant_key
-      # ssh-agent -s
-      # ssh-add /tmp/vagrant_key
-      # sudo cp /tmp/rc.local /etc/rc.local
       sudo dd if=/dev/zero of=/swapfile bs=1024 count=524288
       sudo chmod 600 /swapfile
       sudo mkswap /swapfile
       sudo swapon /swapfile
-      echo "Use the following URL to connect: https://$ETH1_IP"
+      sudo bash /vagrant/vagrant/st2/st2bootstrap-deb.sh
     SHELL
 
   end
+
   config.vm.define "sw1" do |sw1|
     sw1.vm.box = "vEOS-lab-4.15.2.1F"
 
@@ -46,7 +40,29 @@ Vagrant.configure(2) do |config|
 
     sw1.vm.network "private_network", virtualbox__intnet: "link_1", ip: "169.254.1.11", auto_config: false
     sw1.vm.network "private_network", virtualbox__intnet: "link_2", ip: "169.254.1.11", auto_config: false
+
+    #event-handler report_iface_state_change
+    #   trigger on-intf Ethernet1 operstatus
+    #   action bash curl -k -H \"St2-Api-Key: $REPLACE_ME_WITH_ST2_API_KEY\" -H \"Content-Type: application/json\" -X POST https://10.0.2.2:19443/api/v1/webhooks/slack_message --data '{\"type\": \"device_log\", \"device\": \"sw1\", \"message\": \"ALERT!!!ALERT!! Interface status change!!!\"}'
+
+    sw1.vm.provision "shell", inline: <<-SHELL
+      FastCli -p 15 -c """configure
+      ip routing
+      int ethernet1
+        no switchport
+        ip address 192.168.1.1/24
+      int ethernet2
+        no switchport
+        ip address 192.168.2.1/24
+      int Lo0
+        ip address 10.0.0.1/32
+      router bgp 65001
+        network 10.0.0.1/32
+        neighbor 192.168.1.2 remote-as 65002
+      """
+    SHELL
   end
+
   config.vm.define "sw2" do |sw2|
     sw2.vm.box = "vEOS-lab-4.15.2.1F"
 
@@ -58,5 +74,22 @@ Vagrant.configure(2) do |config|
 
     sw2.vm.network "private_network", virtualbox__intnet: "link_1", ip: "169.254.1.11", auto_config: false
     sw2.vm.network "private_network", virtualbox__intnet: "link_2", ip: "169.254.1.11", auto_config: false
+
+    sw2.vm.provision "shell", inline: <<-SHELL
+      FastCli -p 15 -c "configure
+      ip routing
+      int ethernet1
+        no switchport
+        ip address 192.168.1.2/24
+      int ethernet2
+        no switchport
+        ip address 192.168.2.2/24
+      int Lo0
+        ip address 10.0.0.2/32
+      router bgp 65002
+        network 10.0.0.2/32
+        neighbor 192.168.1.1 remote-as 65001
+      "
+    SHELL
   end
 end

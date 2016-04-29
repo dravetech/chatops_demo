@@ -15,6 +15,8 @@ ST2WEB_PKG_VERSION=''
 USERNAME='demo_user'
 PASSWORD='p4ssw0rd'
 
+ETH1_IP=`ifconfig eth1 2>/dev/null|awk '/inet addr:/ {print $2}'|sed 's/addr://'`
+
 fail() {
   echo "############### ERROR ###############"
   echo "# Failed on step - $STEP #"
@@ -294,6 +296,28 @@ verify_st2() {
   st2 run packs.install packs=st2
 }
 
+hacks() {
+  sudo ln -sf /vagrant/packs/chatops_demo /opt/stackstorm/packs/chatops_demo
+  sudo sed -i -r "s/-localhost/-$ETH1_IP/" /opt/stackstorm/chatops/st2chatops.env
+
+  export ST2_AUTH_TOKEN=$(st2 auth $USERNAME -p $PASSWORD -t)
+  st2 run packs.setup_virtualenv packs=chatops_demo
+  st2 run packs.load register=all
+
+
+  sudo cp /usr/share/doc/st2/conf/nginx/st2.conf /etc/nginx/conf.d/
+  sudo cp /vagrant/vagrant/st2/post_result.yaml /opt/stackstorm/packs/chatops/actions/workflows/post_result.yaml
+  sudo service nginx restart
+  sudo st2ctl restart
+  sudo service st2chatops restart
+
+  export ST2_API_KEY=$(st2 apikey create -k)
+  echo ""
+  echo "██████████████████████████████"
+  echo "Use the following key for the API hook: $ST2_API_KEY"
+  echo "██████████████████████████████"
+}
+
 ok_message() {
   echo ""
   echo ""
@@ -306,7 +330,7 @@ ok_message() {
   echo ""
   echo "  st2 is installed and ready to use."
   echo ""
-  echo "Head to https://YOUR_HOST_IP/ to access the WebUI"
+  echo "Head to https://$ETH1_IP/ to access the WebUI"
   echo ""
   echo "Don't forget to dive into our documentation! Here are some resources"
   echo "for you:"
@@ -336,6 +360,7 @@ STEP="Install st2web" && install_st2web
 
 STEP="Install st2chatops" && install_st2chatops
 STEP="Configure st2chatops" && configure_st2chatops
+STEP="Hacks I can't wait to get rid of" && hacks
 trap - EXIT
 
 ok_message
