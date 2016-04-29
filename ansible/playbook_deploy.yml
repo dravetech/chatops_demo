@@ -10,11 +10,13 @@
     - name: Remove old config
       file: path="{{tmp_config_path}}" state=absent
       changed_when: False
+      tags: always
       always_run: yes
     - name: Create placeholder for building templates
       file: path="{{tmp_config_path}}" state=directory
       changed_when: False
       always_run: yes
+      tags: always
 
   tasks:
     - name: Generating new config for adding peer
