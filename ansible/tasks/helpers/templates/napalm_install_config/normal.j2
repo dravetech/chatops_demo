@@ -1,0 +1,13 @@
+{%- if data.failed -%}
+{{'\n    '}}Error:
+      ```
+      {{data.msg}}
+      ```
+{%- elif data.changed -%}
+{{'\n    '}}diff:
+      ```
+      {{ data.msg|indent_text('      ') }}
+      ```
+{%- else -%}
+{{'\n    '}}```This action doesn't change the device.```{{'\n'}}
+{%- endif %}

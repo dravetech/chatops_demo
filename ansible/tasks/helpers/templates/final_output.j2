@@ -1,0 +1,8 @@
+{% for play in result %}
+{{ play.name }}
+{{ '=' * play.name|length }}
+{% for host, data in play.hosts.items() %}
+  {{ host }}
+  {{ '-' * host|length }}
+{{ data }}
+{% endfor %}{% endfor %}

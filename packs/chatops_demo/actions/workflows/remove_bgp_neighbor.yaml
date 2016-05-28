@@ -1,0 +1,79 @@
+version: '2.0'
+
+chatops_demo.remove_bgp_neigh_with_confirm:
+  description: A workflow to remove a BGP neighbor.
+  type: direct
+  input:
+    - hosts
+    - peer
+  tasks:
+    publish_data:
+      action: core.noop
+      publish:
+        chat_user: <% env().get('__actions').get('st2.action').st2_context.parent.api_user %>
+        source_channel: <% env().get('__actions').get('st2.action').st2_context.parent.source_channel %>
+        exec_id: <% env().get('__actions').get('st2.action').st2_context.parent.execution_id %>
+      on-success:
+        - remove_bgp_neighbor_dry_run
+
+    remove_bgp_neighbor_dry_run:
+      action: chatops_demo.remove_bgp_neighbor
+      input:
+        hosts: <% $.hosts %>
+        peer: <% $.peer %>
+        commit_changes: false
+      publish:
+        pretty_output: <% task(remove_bgp_neighbor_dry_run).result.result.pretty_output %>
+      on-success:
+        - notify_dry_run
+
+    notify_dry_run:
+      action: chatops.post_message
+      input:
+        message: '@<% $.chat_user %> Awaiting for confirmation for task <% $.exec_id %>: <% $.pretty_output %>'
+        channel: '<% $.source_channel %>'
+      on-success:
+        - wait_for_confirmation
+
+    wait_for_confirmation:
+      action: st2.kv.get
+      input:
+        key: '<% $.exec_id %>'
+      retry:
+        count: 3
+        delay: 10
+      on-error:
+        - post_not_confirmed
+      on-success:
+        - post_confirmed
+
+    post_not_confirmed:
+      action: chatops.post_message
+      input:
+        channel: '<% $.source_channel %>'
+        message: '@<% $.chat_user %>, I have not received confirmation for <% $.exec_id %>. Aborting.'
+
+    post_confirmed:
+      action: chatops.post_message
+      input:
+        channel: '<% $.source_channel %>'
+        message: '@<% $.chat_user %>, The action <% $.exec_id %> is confirmed. Proceeding...'
+      on-success:
+        - remove_bgp_neighbor_commit
+
+    remove_bgp_neighbor_commit:
+      action: chatops_demo.remove_bgp_neighbor
+      input:
+        hosts: <% $.hosts %>
+        peer: <% $.peer %>
+        commit_changes: true
+      publish:
+        pretty_output: <% task(remove_bgp_neighbor_dry_run).result.result.pretty_output %>
+      on-success:
+        - notify_commit
+
+    notify_commit:
+      action: chatops.post_message
+      input:
+        message: '@<% $.chat_user %> Changes confirmed: <% $.pretty_output %>'
+        channel: '<% $.source_channel %>'

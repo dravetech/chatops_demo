@@ -1,0 +1,9 @@
+---
+name: "remove_bgp_neighbors"
+description: "Remove a BGP neighbor from a device."
+action_ref: "chatops_demo.remove_bgp_neigh_with_confirm"
+formats:
+  - "remove bgp neigh {{hosts}} {{peer}}"
+  - "remove bgp neighbors {{hosts}} {{peer}}"
+result:
+  format: "Action {{ execution.id }} completed {~}"

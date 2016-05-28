@@ -1,0 +1,26 @@
+---
+name: get_bgp_neighbors
+pack: chatops_demo
+runner_type: python-script
+entry_point: 'invoke_wrapper.py'
+description: Get BGP neighbors from a device
+enabled: true
+parameters:
+  task:
+    type: "string"
+    immutable: true
+    default: show.bgp_neighbors
+  task_path:
+    required: true
+    immutable: false
+    default: /vagrant/ansible/
+  hosts:
+    type: "string"
+    required: true
+    description: Host to connect to
+  sudo:
+    immutable: false
+    default: false
+  timeout:
+    immutable: true
+    default: 600

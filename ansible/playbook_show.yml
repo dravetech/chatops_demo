@@ -1,0 +1,19 @@
+---
+- name: BGP playbook
+  hosts: all
+  gather_facts: no
+  connection: local
+  vars:
+    ansible_python_interpreter: "/usr/bin/env python"
+
+  tasks:
+    - name: Get BGP neighbors
+      get_facts:
+        hostname: "{{ ansible_host }}"
+        username: "{{ user }}"
+        password: "{{ password }}"
+        dev_os: "{{ dev_os }}"
+        optional_args:
+          port: "{{ ansible_port }}"
+        filter: bgp_neighbors
+      tags: [show_bgp_neighbors, ]

@@ -1,0 +1,16 @@
+{%- for vrf, vrf_data in data.ansible_facts.bgp_neighbors.items() %}
+{%- for peer, pd in vrf_data.peers.items() %}
+
+### *{{ peer }}*
+
+Description: {{ pd.description }}
+
+Local AS: `{{ pd.local_as }}` Remote AS: `{{ pd.remote_as }}` Remote ID: `{{ pd.remote_id }}`
+Status: `{{ 'Up' if pd.is_up else 'Down' }}` State: `{{ 'Enabled' if pd.is_enabled else 'Shutdown' }}` Since: `{{ pd.uptime }}`
+
+Address Family - Sent Prefixes - Received Prefixes
+      {%- for af, afd in pd.address_family.items() %}
+`{{ af }}` - `{{ afd.sent_prefixes }}` - `{{ afd.received_prefixes }}`
+      {%- endfor -%}
+{%- endfor -%}
+{%- endfor -%}
